@@ -1,0 +1,752 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c4804004-bc79-40db-9f4a-803ad181bfe9",
+              "name": "Company Name",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "5ec99b9d-2550-4ad3-b7b7-6e3276ade981",
+              "name": "Company Category",
+              "value": "={{ $json.categoryName }}",
+              "type": "string"
+            },
+            {
+              "id": "26f25933-077c-462d-8a91-a78e458f3426",
+              "name": "address",
+              "value": "={{ $json.address }}",
+              "type": "string"
+            },
+            {
+              "id": "7fd11d90-2676-45d9-bdf7-6afbf78adf08",
+              "name": "website",
+              "value": "={{ $json.website }}",
+              "type": "string"
+            },
+            {
+              "id": "cd1194d8-274a-42a4-a577-d881b44a7c03",
+              "name": "phone number",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "8901adc1-23b2-4cc3-939c-4c79001f2f22",
+              "name": "Rating",
+              "value": "={{ $json.totalScore }}",
+              "type": "number"
+            },
+            {
+              "id": "8463f3ff-8fb7-4efe-9fb4-e0f4d1667b2a",
+              "name": "Other categories",
+              "value": "={{ $json.categories }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "ea66cce0-81cd-4522-bcd1-f579d735e610",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        832,
+        0
+      ],
+      "id": "b62ef534-001e-4b53-aa71-725876b9f11d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f85d576a-73f0-4c3f-a53c-b8366fec807e",
+              "name": "website",
+              "value": "={{ $('Edit Fields').item.json.website }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        96
+      ],
+      "id": "4ea4edf2-037b-446e-91af-54feb2aed6a8",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        96
+      ],
+      "id": "313f0587-9231-4b92-ae8a-07c7f94064e3",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0a372d0a-ce4d-45c0-b50e-d5dbf297f3fb",
+              "name": "website",
+              "value": "={{ $('Edit Fields1').item.json.website }}",
+              "type": "string"
+            },
+            {
+              "id": "a8c453b1-1ad1-498a-98fe-70affdc3ac10",
+              "name": "User-Agent",
+              "value": "={{ [ \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36\", \"Mozilla/5.0 (Macintosh; Intel Mac OS X 13_0) Applewebkit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15\", \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36\", \"Mozilla/5.0 (iPhone; CPU iPhone OS 16_@ like Mac OS X) ApplcWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1\", \"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:118.0) Gecko/20100101 Firefox/118.0\" ] [Math.floor (Math.random() 5)] }}",
+              "type": "string"
+            },
+            {
+              "id": "a6114c3d-0e40-4955-8169-531ce50177c3",
+              "name": "Accept",
+              "value": "text/html,/;q=0.8",
+              "type": "string"
+            },
+            {
+              "id": "08e64fc5-cfe3-467a-9009-a93ca8c7ee7c",
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.9",
+              "type": "string"
+            },
+            {
+              "id": "60442f30-bf08-4986-a98e-9600103cbb89",
+              "name": "Referer",
+              "value": "https://google.com/",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1456,
+        96
+      ],
+      "id": "0bacb082-bc98-4e40-aa31-3ffc6134873d",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.website }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "={{ $json['User-Agent'] }}"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "={{ $json['Accept-Language'] }}"
+            },
+            {
+              "name": "Referer",
+              "value": "={{ $json.Referer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1664,
+        96
+      ],
+      "id": "2451a72f-cf37-42fb-98b2-db072f46e147",
+      "name": "HTTP Request",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        1872,
+        96
+      ],
+      "id": "242e328d-3879-476b-a6b1-0ea5321b1187",
+      "name": "Markdown",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2080,
+        96
+      ],
+      "id": "3c4b36a2-3f55-46b7-8760-93862b07f0e8",
+      "name": "Wait",
+      "webhookId": "5ef6c7c1-b08a-4e0f-98d6-0706e09186d6"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2272,
+        224
+      ],
+      "id": "fc55077b-7c44-4e3d-8ecb-0ff8af5fa4cf",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1136,
+        -144
+      ],
+      "id": "47a9428c-bbfa-4b93-b125-cf2a2c7c431c",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "jsCode": "/// Regex to match emails (basic form)\nconst emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-z]{2,}/gi;\n\n// Step 1: Collect all matches from all markdowns\nlet allEmails = [];\n\nfor (const item of items) {\n  const markdown = item.json.data\n  const markdown = const matches = markdown.match(emailRegex);\n\n  if (matches && matches.length) {\n    allEmails.push(...matches);\n  }\n}\n\n// Step 2: Filter out fake emails that end with file extensions\nconst filteredEmails = allEmails.filter (email =>\n !email.toLowerCase().match(/\\.(png|jpg|jpeg|gif|css|js)$/)\n );                                       \n\n// Step 3: Remove duplicates \nconst uniqueEmails = [...new Set(filteredEmails)];\n\n// Step 4: Return first email or \"N/A\"\nreturn [\n  {\n    json: {\n      email: uniqueEmails[@] || \"N/A\",\n      allEmails: uniqueEmails.length ? uniqueEmails : [\"N/A\"]\n    }\n  }\n]\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        -48
+      ],
+      "id": "61aae23e-b8c5-447e-8e72-bedb8e8b4174",
+      "name": "Code in JavaScript",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1552,
+        -48
+      ],
+      "id": "b4d5677b-f672-40ae-86c7-0319b3c207d3",
+      "name": "Wait1",
+      "webhookId": "32180ed0-0d10-4300-9832-e85d79ecebec"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2016,
+        -160
+      ],
+      "id": "a5826c39-86ec-46cc-8762-91644cee4bf3",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "actorId": {
+          "__rl": true,
+          "value": "nwua9Gu5YrADL7ZDj",
+          "mode": "list",
+          "cachedResultName": "Google Maps Scraper (compass/crawler-google-places)",
+          "cachedResultUrl": "https://console.apify.com/actors/nwua9Gu5YrADL7ZDj/input"
+        },
+        "customBody": "={\n \"language\": \"en\",\n \"locationQuery\": \"{{ $json.Location }}\",\n  \"maxCrawledPlacesPerSearch\": {{ $json['No. Of Leads']? Number ($json['No. Of Leads']): 10 }},\n  \"searchStringsArray\": [ \n      \"{{ $json.keywords }}\"\n  ],\n \"skipclosedPlaces\": false,\n \"website\": \"withWebsite\"\n}"
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d2f51746-dd86-41e2-b8af-5e7476f1df2e",
+      "name": "Run an Actor",
+      "credentials": {
+        "apifyApi": {
+          "id": "64wCU0gYd6EIGvEU",
+          "name": "Apify account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Datasets",
+        "datasetId": "={{ $json.defaultDatasetId }}",
+        "options": {}
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "bb7e6b3d-ca8b-4780-9afb-8d3e738faaba",
+      "name": "Get dataset items",
+      "credentials": {
+        "apifyApi": {
+          "id": "64wCU0gYd6EIGvEU",
+          "name": "Apify account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "30357ffc-e508-414d-9b2f-2455a5308711",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "N/A",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        1344,
+        -240
+      ],
+      "id": "c9748f70-56eb-463c-9915-b4097bf3e0ec",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app4KDnp9xG0ZrgSw",
+          "mode": "list",
+          "cachedResultName": "LeadGen",
+          "cachedResultUrl": "https://airtable.com/app4KDnp9xG0ZrgSw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUn8DdWruhJcUZz",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/app4KDnp9xG0ZrgSw/tblUn8DdWruhJcUZz"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Rating": "={{ $json.Rating }}",
+            "Website": "={{ $json.website }}",
+            "location": "={{ $json.address }}",
+            "Phone number": "={{ $json['phone number'] }}",
+            "Category": "={{ $json['Company Category'] }}",
+            "Business Name": "={{ $json['Company Name'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Business Name",
+              "displayName": "Business Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone number",
+              "displayName": "Phone number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        -240
+      ],
+      "id": "f965b7ce-2231-4460-9e2b-ca00e827ce22",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "8MECrugBfFSxR1X3",
+          "name": "Support"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Webscraper",
+        "formDescription": "This scrape website urls from Google maps to get company information",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "keywords"
+            },
+            {
+              "fieldLabel": "location"
+            },
+            {
+              "fieldLabel": "No of Leads"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "8b886763-253d-459e-b144-38f9957d1685",
+      "name": "On form submission",
+      "webhookId": "7c732173-5ce0-4216-983b-dd8e3f10b221"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run an Actor": {
+      "main": [
+        [
+          {
+            "node": "Get dataset items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get dataset items": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        []
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Run an Actor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "9bab8065-69af-439e-8918-3662d9473689",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "77d81e44d4926d5f844604d1f27e4efd58b03c90b8107df9d98065275ad6a686"
+  },
+  "id": "iPaZC7s4O4MnFzw0",
+  "tags": []
+}
